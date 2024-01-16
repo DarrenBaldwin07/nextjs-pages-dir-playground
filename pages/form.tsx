@@ -1,5 +1,12 @@
 import React from "react"
 import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+
+const formSchema = z.object({
+  email: z.string().email(),
+  count: z.coerce.number(),
+})
 
 interface FormTypes {
   email: string
@@ -7,7 +14,9 @@ interface FormTypes {
 }
 
 const Form = () => {
-  const { register, handleSubmit } = useForm<FormTypes>()
+  const { register, handleSubmit } = useForm<FormTypes>({
+    resolver: zodResolver(formSchema),
+  })
 
   return (
     <form
