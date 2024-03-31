@@ -3,40 +3,39 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 
-const formSchema = z.object({
-  email: z.string().email(),
-  count: z.coerce.number(),
-})
-
 interface FormTypes {
   email: string
+  address: string
   count: number
 }
 
 const Form = () => {
-  const { register, handleSubmit } = useForm<FormTypes>({
-    resolver: zodResolver(formSchema),
-  })
+  const { register, handleSubmit } = useForm<FormTypes>()
+
+  const onSubmit = (data: FormTypes) => {
+    console.log("DATA", data)
+  }
 
   return (
     <form
-      onSubmit={handleSubmit((data) => {
-        console.log(data)
-      })}
+      onSubmit={handleSubmit(onSubmit)}
+      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col gap-4 items-center w-1/2 p-4"
     >
       <input
         type="email"
-        required
         {...register("email")}
-        style={{ color: "black" }}
+        className="border-2 border-black"
+      />
+      <input
+        {...register("address", { required: true })}
+        className="border-2 border-black"
       />
       <input
         type="number"
-        required
         {...register("count", {
           valueAsNumber: true,
         })}
-        style={{ color: "black" }}
+        className="border-2 border-black"
       />
       <button type="submit">Submit</button>
     </form>
